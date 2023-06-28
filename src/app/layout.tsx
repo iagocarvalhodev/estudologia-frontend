@@ -1,7 +1,6 @@
-'use client'
 import { Header } from '@/components/Header/Header'
-import GlobalStyle from '@/styles/GlobalStyles'
 import { Inter } from 'next/font/google'
+import '../styles/global.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +16,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GlobalStyle />
       <body className={inter.className}>
         <>
           <Header />
