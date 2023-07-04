@@ -33,6 +33,7 @@ export default function Quest({ params }: { params: { id: number } }) {
 
       await setResponseQuests([...responseQuests, item])
       setNumberQuests(numberQuests + 1)
+      setResponseQuest('')
     }
   }
 
@@ -62,6 +63,7 @@ export default function Quest({ params }: { params: { id: number } }) {
       <span>{question?.answers[numberQuests].body}</span>
       <TextArea
         placeholder="Responda aqui"
+        value={responseQuest}
         onChange={(e: { target: { value: SetStateAction<string> } }) =>
           setResponseQuest(e.target.value)
         }
