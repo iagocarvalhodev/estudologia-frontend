@@ -2,21 +2,25 @@
 'use client'
 
 import { useGetQuestions } from '@/hooks/useGetQuestions'
-import { SetStateAction, useState } from 'react'
+import { QuestProps } from '@/types'
+import { SetStateAction, useState, useEffect } from 'react'
 import { styled } from 'styled-components'
-
-interface QuestProps {
-  id: number
-  title: string
-  body: string
-  response: string
-}
+import { useRouter } from 'next/navigation'
 
 export default function Quest({ params }: { params: { id: number } }) {
-  const { question } = useGetQuestions(params.id)
+  const router = useRouter()
+  const { question } = useGetQuestions(false, params.id)
   const [numberQuests, setNumberQuests] = useState<number>(0)
   const [responseQuest, setResponseQuest] = useState<string>('')
   const [responseQuests, setResponseQuests] = useState<QuestProps[]>([])
+
+  useEffect(() => {
+    if (params.id) {
+      if (localStorage.getItem(`@Quests-${params.id}`)) {
+        router.push(`/congratulations/${params.id}`)
+      }
+    }
+  }, [params.id, router])
 
   const handleResponseQuest = async () => {
     if (question) {
@@ -29,7 +33,6 @@ export default function Quest({ params }: { params: { id: number } }) {
 
       await setResponseQuests([...responseQuests, item])
       setNumberQuests(numberQuests + 1)
-      console.log('res', responseQuests, numberQuests)
     }
   }
 
@@ -49,6 +52,7 @@ export default function Quest({ params }: { params: { id: number } }) {
           quests: arrayQuests,
         })
       )
+      router.push(`/congratulations/${params.id}`)
     }
   }
 
@@ -62,17 +66,12 @@ export default function Quest({ params }: { params: { id: number } }) {
           setResponseQuest(e.target.value)
         }
       />
-      <Button
-        onClick={handleSendResponse}
-        className={
-          ((question?.questionAmount && question?.questionAmount - 1) || 0) <
-          numberQuests
-            ? 'disabled'
-            : ''
-        }
-      >
-        Enviar Respostas
-      </Button>
+      {((question?.questionAmount && question?.questionAmount - 1) || 0) ===
+      numberQuests ? (
+        <Button onClick={handleSendResponse}>Enviar Respostas</Button>
+      ) : (
+        ''
+      )}
       <ActionsContent>
         <Button>Pergunta Anterior</Button>
         <Button

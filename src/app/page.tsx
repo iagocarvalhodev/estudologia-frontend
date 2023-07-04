@@ -3,13 +3,25 @@
 import { Card } from '@/components/Card/Card'
 import { useGetQuestions } from '@/hooks/useGetQuestions'
 import { styled } from 'styled-components'
+import { useState } from 'react'
 
 export default function Home() {
-  const { questions } = useGetQuestions()
+  const [filter, setFilter] = useState(false)
+  const { questions } = useGetQuestions(filter)
+
+  const handleChange = () => {
+    setFilter(!filter)
+  }
+
   return (
     <Wrapper>
       <CheckArea>
-        <input type="checkbox" name="check" id="" />
+        <input
+          type="checkbox"
+          name="filter"
+          checked={filter}
+          onChange={handleChange}
+        />
         <span>Mostrar apenas questões não respondidas</span>
       </CheckArea>
       <Content>

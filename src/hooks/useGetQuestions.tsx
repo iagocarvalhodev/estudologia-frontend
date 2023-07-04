@@ -3,7 +3,7 @@ import api from '@/config/api'
 import { Questions } from '@/types'
 import { useEffect, useState } from 'react'
 
-export const useGetQuestions = (id?: number) => {
+export const useGetQuestions = (filter = false, id?: number) => {
   const [questions, setQuestions] = useState<Questions[]>([])
   const [question, setQuestion] = useState<Questions | undefined>(undefined)
 
@@ -17,9 +17,15 @@ export const useGetQuestions = (id?: number) => {
           )
           setQuestion(bookQuestion)
         }
+        if (filter === true) {
+          const filterQuestions = res.data.filter(
+            (q: Questions) => q.answered === false
+          )
+          setQuestions(filterQuestions)
+        }
       }
     })
-  }, [id])
+  }, [id, filter])
 
   return { questions, question }
 }

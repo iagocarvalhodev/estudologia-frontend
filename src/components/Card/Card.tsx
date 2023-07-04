@@ -1,12 +1,15 @@
 'use client'
 import { styled } from 'styled-components'
 import { Questions } from '@/types'
+import { useRouter } from 'next/navigation'
 
 interface CardProps {
   quest: Questions
 }
 
 export const Card = ({ quest }: CardProps) => {
+  const router = useRouter()
+
   return (
     <CardContent>
       <h1>{quest.title}</h1>
@@ -17,6 +20,7 @@ export const Card = ({ quest }: CardProps) => {
           type="button"
           disabled={quest.answered}
           className={quest.answered ? 'disabled' : ''}
+          onClick={() => router.push(`/quest/${quest.id}`)}
         >
           Responder
         </button>
@@ -69,6 +73,9 @@ const { CardContent, Action } = {
       &.disabled {
         opacity: 0.5;
         cursor: no-drop;
+      }
+      &:hover {
+        opacity: 0.9;
       }
     }
   `,

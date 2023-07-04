@@ -10,3 +10,14 @@ export interface Questions {
   answered: boolean
   answers: Answers[]
 }
+
+export interface QuestProps {
+  id: number
+  title: string
+  body: string
+  response: string
+}
+
+export interface ResponseProps {
+  quests: QuestProps[]
+}
