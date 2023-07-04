@@ -13,27 +13,16 @@ describe('Congratulations', () => {
       ],
     }
 
-    const localStorageMock = (() => {
-      let store: Record<string, string> = {}
-
-      return {
-        getItem: jest.fn((key: string) => store[key] || null),
-        setItem: jest.fn((key: string, value: string) => {
-          store[key] = value.toString()
-        }),
-        removeItem: jest.fn((key: string) => {
-          delete store[key]
-        }),
-        clear: jest.fn(() => {
-          store = {}
-        }),
-        key: jest.fn((index: number) => {
-          const keys = Object.keys(store)
-          return keys[index] || null
-        }),
-        length: Object.keys(store).length,
-      }
-    })()
+    const localStorageMock = {
+      getItem: jest.fn((key) => {
+        return JSON.stringify(mockQuests)
+      }),
+      setItem: jest.fn(),
+      removeItem: jest.fn(),
+      clear: jest.fn(),
+      key: jest.fn(),
+      length: 1,
+    }
 
     global.localStorage = localStorageMock
 
